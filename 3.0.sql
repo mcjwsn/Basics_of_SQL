@@ -94,8 +94,42 @@
 --3. Dla każdego zamówienia podaj jego pełną wartość (wliczając opłatę za przesyłkę). Zbiór wynikowy powinien zawierać nr zamówienia, datę zamówienia, nazwę klienta oraz pełną wartość zamówienia
 
 --3. Wybierz nazwy i numery telefonów klientów, którzy kupowali produkty z kategorii‘Confectionsʼ
+
+select distinct Customers.CompanyName, Customers.Phone from Customers
+join orders on customers.customerid = orders.customerid
+join [Order details] od on od.Orderid = oRDERs.orderid
+join Products on Products.Productid = Od.Productid
+join Categories on categories.CategoryID = Products.CategoryID
+where Categories.CategoryName = 'Confections'
+
 --. Wybierz nazwy i numery telefonów klientów, którzy nie kupowali produktów z kategorii‘Confectionsʼ
+select Customers.CompanyName, Customers.Phone from Customers
+except
+select distinct Customers.CompanyName, Customers.Phone from Customers
+join orders on customers.customerid = orders.customerid
+join [Order details] od on od.Orderid = oRDERs.orderid
+join Products on Products.Productid = Od.Productid
+join Categories on categories.CategoryID = Products.CategoryID
+and Categories.CategoryName = 'Confections'
 --. Wybierz nazwy i numery telefonów klientów, którzy w 1997r nie kupowali produktów zkategorii ‘Confectionsʼ
+select Customers.CompanyName, Customers.Phone from Customers
+except
+select distinct Customers.CompanyName, Customers.Phone from Customers
+join orders on customers.customerid = orders.customerid
+join [Order details] od on od.Orderid = oRDERs.orderid
+join Products on Products.Productid = Od.Productid
+join Categories on categories.CategoryID = Products.CategoryID
+where Categories.CategoryName = 'Confections' and year(orders.orderdate)=1997
+
+SELECT c.CompanyName, c.Phone
+FROM Customers c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+LEFT JOIN [Order Details] od ON o.OrderID = od.OrderID
+LEFT JOIN Products p ON od.ProductID = p.ProductID
+LEFT JOIN Categories cat ON p.CategoryID = cat.CategoryID
+WHERE (cat.CategoryName = 'Confections' OR YEAR(o.OrderDate) = 1997)
+GROUP BY c.CompanyName, c.Phone;
+
 
 --1. Napisz polecenie, które wyświetla listę dzieci będących członkami biblioteki (bazalibrary). Interesuje nas imię, nazwisko, data urodzenia dziecka i adres zamieszkaniadziecka.
 --select juvenile.member_no, concat(firstname,' ',lastname) imie_nazw, birth_date, concat(city,' ', street) adres, adult.state, adult.street from juvenile join member on juvenile.member_no = member.member_no    join adult on juvenile.adult_member_no = adult.member_no;
@@ -108,8 +142,37 @@
 --3. Napisz polecenie, które wyświetla pracowników, którzy mają podwładnych (bazanorthwind)
 -- do poprawy
 --select distinct e.EmployeeID, Employees.Lastname,employees.firstname,e.FirstName,e.LastName from employees left  join employees e on employees.EmployeeID = e.ReportsTo where e.FirstName is not Null
---1. Podaj listę członków biblioteki mieszkających w Arizonie (AZ) mają więcej niż dwojedzieci zapisanych do biblioteki
---2. Podaj listę członków biblioteki mieszkających w Arizonie (AZ) którzy mają więcej niżdwoje dzieci zapisanych do biblioteki oraz takich którzy mieszkają w Kaliforni (CA) imają więcej niż troje dzieci zapisanych do biblioteki
+
+
+
+
+
+
+
+
+--1. Podaj listę członków biblioteki mieszkających w Arizonie (AZ) mają
+--więcej niż dwoje dzieci zapisanychdo biblioteki
+--SELECT a.member_no, m.lastname, m.firstname
+--FROM Adult a
+--JOIN Member m ON a.member_no = m.member_no
+--JOIN Juvenile j ON j.adult_member_no = a.member_no
+--WHERE a.state = 'AZ'
+--GROUP BY a.member_no, m.lastname, m.firstname
+--HAVING COUNT(j.member_no) > 2;
+
+--2. Podaj listę członków biblioteki mieszkających w Arizonie (AZ) którzy mają więcej niż
+--dwoje dzieci zapisanych do biblioteki oraz takich którzy mieszkają w Kaliforni (CA) i
+--mają więcej niż troje dzieci zapisanych do biblioteki
+--SELECT a.member_no, m.lastname, m.firstname, a.state
+--FROM Adult a
+--JOIN Member m ON a.member_no = m.member_no
+--JOIN Juvenile j ON j.adult_member_no = a.member_no
+--WHERE a.state IN ('AZ', 'CA')
+--GROUP BY a.member_no, m.lastname, m.firstname, a.state
+--HAVING 
+--    (a.state = 'AZ' AND COUNT(j.member_no) > 2) 
+--    OR (a.state = 'CA' AND COUNT(j.member_no) > 3);
+
 
 --dla kazdego klienta podaj liczbe zamowien w 1997
 --select customers.CompanyName,count(orderid) as 'Liczba zamowien w 1997' -- count(1) jesli wiemy ze nie bedzie zlych
