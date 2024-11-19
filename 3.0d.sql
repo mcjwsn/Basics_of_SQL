@@ -90,45 +90,61 @@
 --select customers.CompanyName,count(orderid) from customers join orders on customers.CustomerID = orders.CustomerID where month(orders.orderdate) = 3 group by customers.CompanyName
 
 --1. Który ze spedytorów był najaktywniejszy w 1997 roku, podaj nazwę tego spedytora
+
+--select top 1 count(ShipVia),ShipVia  from Orders group by ShipVia order by count(ShipVIa) desc
+
+
 --2. Dla każdego zamówienia podaj wartość zamówionych produktów. Zbiór wynikowy powinien zawierać nr zamówienia, datę zamówienia, nazwę klienta oraz wartość zamówionych produktów
+--select orders.orderid, orders.OrderDate, Customers.CompanyName, sum(od.quantity*od.unitPrice*(1-od.discount)) as 'price' from orders 
+--join Customers on orders.CustomerID = customers.CustomerID
+--join [Order Details] od on orders.orderid = od.OrderID
+--group by orders.OrderID, orders.OrderDate, customers.CompanyName
+--order by orders.OrderId
+
 --3. Dla każdego zamówienia podaj jego pełną wartość (wliczając opłatę za przesyłkę). Zbiór wynikowy powinien zawierać nr zamówienia, datę zamówienia, nazwę klienta oraz pełną wartość zamówienia
+--select orders.orderid, orders.OrderDate, Customers.CompanyName, sum(od.quantity*od.unitPrice*(1-od.discount)+orders.Freight) as 'price' from orders 
+--join Customers on orders.CustomerID = customers.CustomerID
+--join [Order Details] od on orders.orderid = od.OrderID
+--group by orders.OrderID, orders.OrderDate, customers.CompanyName
+--order by orders.OrderId
+
 
 --3. Wybierz nazwy i numery telefonów klientów, którzy kupowali produkty z kategorii‘Confectionsʼ
 
-select distinct Customers.CompanyName, Customers.Phone from Customers
-join orders on customers.customerid = orders.customerid
-join [Order details] od on od.Orderid = oRDERs.orderid
-join Products on Products.Productid = Od.Productid
-join Categories on categories.CategoryID = Products.CategoryID
-where Categories.CategoryName = 'Confections'
+--select distinct Customers.CompanyName, Customers.Phone from Customers
+--join orders on customers.customerid = orders.customerid
+--join [Order details] od on od.Orderid = oRDERs.orderid
+--join Products on Products.Productid = Od.Productid
+--join Categories on categories.CategoryID = Products.CategoryID
+--where Categories.CategoryName = 'Confections'
 
 --. Wybierz nazwy i numery telefonów klientów, którzy nie kupowali produktów z kategorii‘Confectionsʼ
-select Customers.CompanyName, Customers.Phone from Customers
-except
-select distinct Customers.CompanyName, Customers.Phone from Customers
-join orders on customers.customerid = orders.customerid
-join [Order details] od on od.Orderid = oRDERs.orderid
-join Products on Products.Productid = Od.Productid
-join Categories on categories.CategoryID = Products.CategoryID
-and Categories.CategoryName = 'Confections'
+--select Customers.CompanyName, Customers.Phone from Customers
+--except
+--select distinct Customers.CompanyName, Customers.Phone from Customers
+--join orders on customers.customerid = orders.customerid
+--join [Order details] od on od.Orderid = oRDERs.orderid
+--join Products on Products.Productid = Od.Productid
+--join Categories on categories.CategoryID = Products.CategoryID
+--and Categories.CategoryName = 'Confections'
 --. Wybierz nazwy i numery telefonów klientów, którzy w 1997r nie kupowali produktów zkategorii ‘Confectionsʼ
-select Customers.CompanyName, Customers.Phone from Customers
-except
-select distinct Customers.CompanyName, Customers.Phone from Customers
-join orders on customers.customerid = orders.customerid
-join [Order details] od on od.Orderid = oRDERs.orderid
-join Products on Products.Productid = Od.Productid
-join Categories on categories.CategoryID = Products.CategoryID
-where Categories.CategoryName = 'Confections' and year(orders.orderdate)=1997
+--select Customers.CompanyName, Customers.Phone from Customers
+--except
+--select distinct Customers.CompanyName, Customers.Phone from Customers
+--join orders on customers.customerid = orders.customerid
+--join [Order details] od on od.Orderid = oRDERs.orderid
+--join Products on Products.Productid = Od.Productid
+--join Categories on categories.CategoryID = Products.CategoryID
+--where Categories.CategoryName = 'Confections' and year(orders.orderdate)=1997
 
-SELECT c.CompanyName, c.Phone
-FROM Customers c
-LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
-LEFT JOIN [Order Details] od ON o.OrderID = od.OrderID
-LEFT JOIN Products p ON od.ProductID = p.ProductID
-LEFT JOIN Categories cat ON p.CategoryID = cat.CategoryID
-WHERE (cat.CategoryName = 'Confections' OR YEAR(o.OrderDate) = 1997)
-GROUP BY c.CompanyName, c.Phone;
+--SELECT c.CompanyName, c.Phone
+--FROM Customers c
+--LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+--LEFT JOIN [Order Details] od ON o.OrderID = od.OrderID
+--LEFT JOIN Products p ON od.ProductID = p.ProductID
+--LEFT JOIN Categories cat ON p.CategoryID = cat.CategoryID
+--WHERE (cat.CategoryName = 'Confections' OR YEAR(o.OrderDate) = 1997)
+--GROUP BY c.CompanyName, c.Phone;
 
 
 --1. Napisz polecenie, które wyświetla listę dzieci będących członkami biblioteki (bazalibrary). Interesuje nas imię, nazwisko, data urodzenia dziecka i adres zamieszkaniadziecka.
@@ -136,12 +152,21 @@ GROUP BY c.CompanyName, c.Phone;
 --2. Napisz polecenie, które wyświetla listę dzieci będących członkami biblioteki (bazalibrary). Interesuje nas imię, nazwisko, data urodzenia dziecka, adres zamieszkaniadziecka oraz imię i nazwisko rodzica
 --select juvenile.member_no, birth_date, d.firstname, d.lastname, concat(city,' ', street) adres, m.firstname, m.lastname from juvenile join member d on juvenile.member_no = d.member_no  join adult on juvenile.adult_member_no = adult.member_no join member m on adult.member_no = m.member_no order by m.member_no
 
+
+
+
 --1. Napisz polecenie, które wyświetla pracowników oraz ich podwładnych (bazanorthwind)
---select employees.Lastname,employees.firstname,,e.FirstName,e.LastName from employees join employees e on employees.EmployeeID = e.ReportsTo
+--select employees.Lastname,employees.firstname,e.FirstName,e.LastName from employees
+--join employees e on employees.EmployeeID = e.ReportsTo
 --2. Napisz polecenie, które wyświetla pracowników, którzy nie mają podwładnych (bazanorthwind)
+--select Employees.LastName, Employees.FirstName from Employees
+--except
+--select employees.Lastname,employees.firstname from employees
+--join employees e on employees.EmployeeID = e.ReportsTo
+
 --3. Napisz polecenie, które wyświetla pracowników, którzy mają podwładnych (bazanorthwind)
--- do poprawy
---select distinct e.EmployeeID, Employees.Lastname,employees.firstname,e.FirstName,e.LastName from employees left  join employees e on employees.EmployeeID = e.ReportsTo where e.FirstName is not Null
+--select distinct employees.Lastname,employees.firstname from employees
+--join employees e on employees.EmployeeID = e.ReportsTo
 
 
 
@@ -186,4 +211,23 @@ GROUP BY c.CompanyName, c.Phone;
 --from customers left join orders on customers.CustomerID = orders.CustomerID  and year(orders.orderdate) = 1997 
 --group by customers.CompanyName, customers.CustomerID
 -- dla kazdego klienta podja wartosc zakupioncyh przez niego produktow z kategorii confections
+select Customers.CustomerID, customers.companyName, isnull(sum(od.unitprice * od.quantity * (1-od.discount)),0) t from Customers
+left join orders on orders.CustomerID = Customers.CustomerID
+left join [order details] od on od.orderid = orders.orderid
+left join products on od.productid =products.productid
+left join categories on categories.categoryid = products.categoryid and categories.categoryname = 'Confections'
+--zapytac czym sie rozni uzywanie where i warunku w joinie
+group by customers.customerid, customers.companyname
+order by t
+
+select * from customers
+
 -- dla kazdego klienta podaj liczbe roznych prod z kategorii confections zakupioncyh przez niego w 1997
+select customers.CustomerID, customers.companyName, isnull(count(distinct PRODUCTs.productid),0) t from customers
+left join orders on orders.CustomerID = Customers.CustomerID and year(orders.OrderDate)=1997
+left join [order details] od on od.orderid = orders.orderid 
+left join products on od.productid =products.productid
+left join categories on categories.categoryid = products.categoryid and  categories.categoryname = 'Confections'
+group by customers.customerid, customers.companyname
+HAVING iSNULL(COUNT(DISTINCT Products.ProductID), 0) = 0 OR ISNULL(COUNT(DISTINCT Products.ProductID), 0) > 0
+ORDER BY t DESC
