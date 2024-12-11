@@ -84,22 +84,26 @@
 --on Products.SupplierID = Suppliers.SupplierID where Categories.CategoryName = 'Confections'
 
 --3. Dla każdego klienta podaj liczbę złożonych przez niego zamówień. Zbiór wynikowy powinien zawierać nazwę klienta, oraz liczbę zamówień
---select customers.CompanyName,count(orderid) from customers join orders on customers.CustomerID = orders.CustomerID group by customers.CompanyName
+select customers.CompanyName,count(orderid) from customers
+join orders on customers.CustomerID = orders.CustomerID group by customers.CompanyName
 
 --4. Dla każdego klienta podaj liczbę złożonych przez niego zamówień w marcu 1997r
---select customers.CompanyName,count(orderid) from customers join orders on customers.CustomerID = orders.CustomerID where month(orders.orderdate) = 3 group by customers.CompanyName
+select customers.CompanyName,count(orderid) from customers
+join orders on customers.CustomerID = orders.CustomerID where year(orders.orderdate) = 1997
+group by customers.CompanyName
 
 --1. Który ze spedytorów był najaktywniejszy w 1997 roku, podaj nazwę tego spedytora
 
 --select top 1 count(ShipVia),ShipVia  from Orders group by ShipVia order by count(ShipVIa) desc
 
 
---2. Dla każdego zamówienia podaj wartość zamówionych produktów. Zbiór wynikowy powinien zawierać nr zamówienia, datę zamówienia, nazwę klienta oraz wartość zamówionych produktów
---select orders.orderid, orders.OrderDate, Customers.CompanyName, sum(od.quantity*od.unitPrice*(1-od.discount)) as 'price' from orders 
---join Customers on orders.CustomerID = customers.CustomerID
---join [Order Details] od on orders.orderid = od.OrderID
---group by orders.OrderID, orders.OrderDate, customers.CompanyName
---order by orders.OrderId
+--2. Dla każdego zamówienia podaj wartość zamówionych produktów w 1997. Zbiór wynikowy powinien zawierać nr zamówienia, datę zamówienia, nazwę klienta oraz wartość zamówionych produktów
+select orders.orderid, orders.OrderDate, Customers.CompanyName, sum(od.quantity*od.unitPrice) as 'val' from orders 
+join Customers on orders.CustomerID = customers.CustomerID
+join [Order Details] od on orders.orderid = od.OrderID
+where year(orders.OrderDate)=1997
+group by orders.OrderID, orders.OrderDate, customers.CompanyName
+order by orders.OrderId
 
 --3. Dla każdego zamówienia podaj jego pełną wartość (wliczając opłatę za przesyłkę). Zbiór wynikowy powinien zawierać nr zamówienia, datę zamówienia, nazwę klienta oraz pełną wartość zamówienia
 --select orders.orderid, orders.OrderDate, Customers.CompanyName, sum(od.quantity*od.unitPrice*(1-od.discount)+orders.Freight) as 'price' from orders 

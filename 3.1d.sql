@@ -30,11 +30,13 @@
 --Æwiczenie 2.
 --1. Podaj nazwy przewoŸników, którzy w marcu 1998 przewozili produkty z kategorii 'Meat/Poultry'
 --select distinct Shippers.CompanyName from Orders
---join Shippers on orders.ShipVia = Shippers.ShipperID
---join [Order Details] od on od.OrderID = orders.OrderID
---join Products on od.ProductID = products.ProductID
---join categories on products.CategoryID = Categories.CategoryID
---where Categories.CategoryName = 'Meat/Poultry'
+select concat('PHONE',isnull(customers.Phone,' None') , ' /  ' , 'FAX',isnull(customers.Fax,' None')) t from Customers
+join orders on orders.customerid = customers.customerid
+join Shippers on orders.ShipVia = Shippers.ShipperID
+join [Order Details] od on od.OrderID = orders.OrderID
+join Products on od.ProductID = products.ProductID
+join categories on products.CategoryID = Categories.CategoryID
+where Categories.CategoryName = 'Confections'
 --and year(orders.OrderDate) = 1998 and month(orders.OrderDate) = 3
 
 --2. Podaj nazwy przewoŸników, którzy w marcu 1997r nie przewozili produktów z kategorii 'Meat/Poultry'
