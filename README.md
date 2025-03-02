@@ -1,2 +1,3 @@
 # Basics_of_SQL
-Introduction to DataBases
+First exercises in SQL using MSSQLServer and MySQL.
+Tasks requring flexible approach with SELECTs clauses and more intermidiate sql syntax. 
